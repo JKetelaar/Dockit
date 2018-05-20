@@ -5,6 +5,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 const DOCKIT_VERSION = '0.0.1';
+const DOCKIT_RESOURCES_DIR = __DIR__ . '/../resources';
 
 if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
     require __DIR__ . '/../vendor/autoload.php';

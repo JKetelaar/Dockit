@@ -35,7 +35,7 @@ class Config implements DockitCommand
      */
     public function __construct()
     {
-        $loader = new Twig_Loader_Filesystem(__DIR__ . '/../../../../Resources/docker/');
+        $loader = new Twig_Loader_Filesystem(DOCKIT_RESOURCES_DIR . '/docker/');
         $this->twig = new Twig_Environment($loader);
 
         $this->createDirectory(getcwd() . '/private/dockit/');
