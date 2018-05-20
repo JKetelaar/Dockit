@@ -5,6 +5,7 @@
 
 namespace JKetelaar\Dockit\Common;
 
+use JKetelaar\Dockit\Configuration\ProjectConfiguration;
 use JsonMapper;
 use ReflectionClass;
 use ReflectionProperty;
@@ -21,7 +22,7 @@ class ConfigHelper
     private static $jsonMapper;
 
     /**
-     * @var Config
+     * @var ProjectConfiguration
      */
     private static $config;
 
@@ -46,19 +47,19 @@ class ConfigHelper
     }
 
     /**
-     * @return Config
+     * @return ProjectConfiguration
      * @throws \JsonMapper_Exception
      * @throws \ReflectionException
      */
-    public static function getConfig(): Config
+    public static function getConfig(): ProjectConfiguration
     {
         if (self::$config === null) {
-            /** @var Config $config */
+            /** @var ProjectConfiguration $config */
             $config = null;
             if (file_exists(self::getConfigFile())) {
-                $config = self::getJsonMapper()->map(json_decode(file_get_contents(self::getConfigFile())), new Config());
+                $config = self::getJsonMapper()->map(json_decode(file_get_contents(self::getConfigFile())), new ProjectConfiguration());
             } else {
-                $config = new Config();
+                $config = new ProjectConfiguration();
             }
 
             self::setConfig($config);
@@ -68,10 +69,10 @@ class ConfigHelper
     }
 
     /**
-     * @param Config $config
+     * @param ProjectConfiguration $config
      * @throws \ReflectionException
      */
-    public static function setConfig(Config $config)
+    public static function setConfig(ProjectConfiguration $config)
     {
         $configData = [];
         $reflectionClass = new ReflectionClass($config);

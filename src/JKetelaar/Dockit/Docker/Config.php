@@ -57,8 +57,6 @@ class Config implements DockitCommand
         $mysqlDir = $_SERVER['HOME'] . '/.dockit/data/mysql/' . strtolower(preg_replace('/[^A-Za-z0-9\-]/', '', $this->getProjectName()));
 
         $this->createTemplateFile('docker-compose.yml.twig', getcwd() . '/private/dockit/docker-compose.yml', [
-            'ports' => ConfigHelper::getConfig()->getPorts(),
-
             'project' =>
                 [
                     'name' => strtolower(preg_replace('/[^A-Za-z0-9\-]/', '', $this->getProjectName())),

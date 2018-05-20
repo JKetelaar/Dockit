@@ -3,13 +3,13 @@
  * @author JKetelaar
  */
 
-namespace JKetelaar\Dockit\Common;
+namespace JKetelaar\Dockit\Configuration;
 
 /**
- * Class Config
+ * Class ProjectConfiguration
  * @package JKetelaar\Dockit\Common
  */
-class Config
+class ProjectConfiguration
 {
     /**
      * @var string
@@ -36,9 +36,9 @@ class Config
 
     /**
      * @param string $projectName
-     * @return Config
+     * @return ProjectConfiguration
      */
-    public function setProjectName(string $projectName): Config
+    public function setProjectName(string $projectName): ProjectConfiguration
     {
         $this->projectName = $projectName;
 
@@ -55,9 +55,9 @@ class Config
 
     /**
      * @param string $cms
-     * @return Config
+     * @return ProjectConfiguration
      */
-    public function setCms(string $cms): Config
+    public function setCms(string $cms): ProjectConfiguration
     {
         $this->cms = $cms;
 
@@ -74,9 +74,9 @@ class Config
 
     /**
      * @param string $php
-     * @return Config
+     * @return ProjectConfiguration
      */
-    public function setPhp(string $php): Config
+    public function setPhp(string $php): ProjectConfiguration
     {
         $this->php = $php;
 
