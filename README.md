@@ -8,4 +8,4 @@ This creates a configuration setup for your current project, based on the argume
 Simply type in `dockit config` and answer what the CLI requests.
 
 ### `Dockit open`
-Opens the current project in your browser
+Opens the current project in your browser.
