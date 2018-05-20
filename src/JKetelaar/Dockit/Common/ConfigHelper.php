@@ -47,6 +47,8 @@ class ConfigHelper
 
     /**
      * @return Config
+     * @throws \JsonMapper_Exception
+     * @throws \ReflectionException
      */
     public static function getConfig(): Config
     {
@@ -67,6 +69,7 @@ class ConfigHelper
 
     /**
      * @param Config $config
+     * @throws \ReflectionException
      */
     public static function setConfig(Config $config)
     {
