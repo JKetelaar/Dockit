@@ -32,7 +32,6 @@ frontend frontend
 backend {{ project.projectName }}-frontend
     balance roundrobin
     option httpclose
-    option forwardfor
     server {{ project.projectName }} {{ project.projectName }}-webserver:80
 
 {% endfor %}

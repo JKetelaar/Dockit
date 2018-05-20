@@ -30,5 +30,11 @@ class Stop implements DockitCommand
 
         CommandLine::execute('docker-compose --log-level CRITICAL --file "' . getcwd() . '/private' . '/dockit/docker-compose.yml" down',
             $output);
+
+        $output->writeln('<info>Stopping old docker instances</info>');
+        CommandLine::execute('docker ps --filter "status=running" | grep \'days ago\' | awk \'{print $1}\' | xargs docker stop');
+
+        $output->writeln('<info>Removing old docker instances</info>');
+        CommandLine::execute('docker ps --filter "status=exited" | grep \'weeks ago\' | awk \'{print $1}\' | xargs docker rm');
     }
 }

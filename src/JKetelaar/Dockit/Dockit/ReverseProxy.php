@@ -58,11 +58,14 @@ class ReverseProxy
      */
     public function restart(OutputInterface $output = null)
     {
+        $output->writeln('<info>Stopping dockit instances</info>');
+
         CommandLine::execute(
             'docker-compose --log-level CRITICAL --file "'.$_SERVER['HOME'].'/.dockit/dockit/docker-compose.yml" down',
             $output
         );
 
+        $output->writeln('<info>Starting dockit instances</info>');
         CommandLine::execute(
             'docker-compose --log-level CRITICAL --file "'.$_SERVER['HOME'].'/.dockit/dockit/docker-compose.yml" up -d',
             $output
