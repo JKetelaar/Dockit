@@ -31,7 +31,7 @@ services:
         container_name: {{ project.projectName }}-php-fpm
         working_dir: /application
         volumes:
-            - "{{ project.directory }}:/application"
+            - "{{ directory }}:/application"
             - "./php-fpm/php-ini-overrides.ini:{{ project.getDockerPhpPath }}fpm/conf.d/99-overrides.ini"
         networks:
           - {{ project.projectName }}
