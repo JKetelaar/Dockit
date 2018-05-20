@@ -23,17 +23,17 @@ frontend frontend
     use_backend haproxy if haproxy
 
 {% for project in projects %}
-    acl {{ project.name }} hdr(host) -i {{ project.domain }}
-    use_backend {{ project.name }}-frontend if {{ project.name }}
+    acl {{ project.projectName }} hdr(host) -i {{ project.getDomainWithTLD }}
+    use_backend {{ project.projectName }}-frontend if {{ project.projectName }}
 
 {% endfor %}
 
 {% for project in projects %}
-backend {{ project.name }}-frontend
+backend {{ project.projectName }}-frontend
     balance roundrobin
     option httpclose
     option forwardfor
-    server {{ project.name }} {{ project.name }}-webserver:80
+    server {{ project.projectName }} {{ project.projectName }}-webserver:80
 
 {% endfor %}
 

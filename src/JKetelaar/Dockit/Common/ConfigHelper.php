@@ -5,6 +5,7 @@
 
 namespace JKetelaar\Dockit\Common;
 
+use JKetelaar\Dockit\Configuration\GlobalConfiguration;
 use JKetelaar\Dockit\Configuration\ProjectConfiguration;
 use JsonMapper;
 use ReflectionClass;
@@ -27,26 +28,6 @@ class ConfigHelper
     private static $config;
 
     /**
-     * @return string
-     */
-    private static final function getConfigFile(): string
-    {
-        return getcwd() . '/private/dockit/config.json';
-    }
-
-    /**
-     * @return JsonMapper
-     */
-    private static final function getJsonMapper(): JsonMapper
-    {
-        if (self::$jsonMapper === null) {
-            self::$jsonMapper = new JsonMapper();
-        }
-
-        return self::$jsonMapper;
-    }
-
-    /**
      * @return ProjectConfiguration
      * @throws \JsonMapper_Exception
      * @throws \ReflectionException
@@ -57,7 +38,10 @@ class ConfigHelper
             /** @var ProjectConfiguration $config */
             $config = null;
             if (file_exists(self::getConfigFile())) {
-                $config = self::getJsonMapper()->map(json_decode(file_get_contents(self::getConfigFile())), new ProjectConfiguration());
+                $config = self::getJsonMapper()->map(
+                    json_decode(file_get_contents(self::getConfigFile())),
+                    new ProjectConfiguration()
+                );
             } else {
                 $config = new ProjectConfiguration();
             }
@@ -85,5 +69,44 @@ class ConfigHelper
         file_put_contents(self::getConfigFile(), json_encode($configData));
 
         self::$config = $config;
+    }
+
+    /**
+     * @return string
+     */
+    private static final function getConfigFile(): string
+    {
+        return getcwd().'/private/dockit/config.json';
+    }
+
+    /**
+     * @return JsonMapper
+     */
+    public static final function getJsonMapper(): JsonMapper
+    {
+        if (self::$jsonMapper === null) {
+            self::$jsonMapper = new JsonMapper();
+        }
+
+        return self::$jsonMapper;
+    }
+
+    /**
+     * @param string $file
+     * @return ProjectConfiguration|null|object
+     */
+    public static function getConfigFromFile(string $file)
+    {
+        if (file_exists($file)) {
+            try {
+                return self::getJsonMapper()->map(
+                    json_decode(file_get_contents($file)),
+                    new ProjectConfiguration()
+                );
+            } catch (\JsonMapper_Exception $e) {
+            }
+        }
+
+        return null;
     }
 }

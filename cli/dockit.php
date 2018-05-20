@@ -72,7 +72,7 @@ $app->command(
         $dockerStop->execute($input, $output, $this->getHelperSet(), []);
         $dockerStart->execute($input, $output, $this->getHelperSet(), []);
 
-//        $dockerConfig->restartHAProxy($output);
+        $dockerConfig->restartHAProxy($output);
     }
 )->descriptions(
     'Restarts the docker instances for the current project',

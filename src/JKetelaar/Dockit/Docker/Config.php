@@ -7,7 +7,7 @@ namespace JKetelaar\Dockit\Docker;
 
 use JKetelaar\Dockit\Common\ConfigHelper;
 use JKetelaar\Dockit\Common\DockitCommand;
-use JKetelaar\Dockit\HAProxy\ReverseProxy;
+use JKetelaar\Dockit\Dockit\ReverseProxy;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -45,13 +45,20 @@ class Config implements DockitCommand
         $this->reverseProxy = new ReverseProxy($this);
     }
 
-    private function createDirectory($directory)
+    /**
+     * @param string $directory
+     */
+    private function createDirectory(string $directory)
     {
         if (!file_exists($directory)) {
             mkdir($directory, 0755, true);
         }
     }
 
+    /**
+     * @throws \JsonMapper_Exception
+     * @throws \ReflectionException
+     */
     public function createDockerCompose()
     {
         $mysqlDir = $_SERVER['HOME'] . '/.dockit/data/mysql/' . strtolower(preg_replace('/[^A-Za-z0-9\-]/', '', $this->getProjectName()));
@@ -89,6 +96,8 @@ class Config implements DockitCommand
 
     /**
      * @return string
+     * @throws \JsonMapper_Exception
+     * @throws \ReflectionException
      */
     private function getPHPVersion(): string
     {
@@ -97,6 +106,8 @@ class Config implements DockitCommand
 
     /**
      * @return string
+     * @throws \JsonMapper_Exception
+     * @throws \ReflectionException
      */
     private function getProjectName(): string
     {
@@ -105,12 +116,18 @@ class Config implements DockitCommand
 
     /**
      * @return string
+     * @throws \JsonMapper_Exception
+     * @throws \ReflectionException
      */
     private function getProjectCMS(): string
     {
         return ConfigHelper::getConfig()->getCms();
     }
 
+    /**
+     * @throws \JsonMapper_Exception
+     * @throws \ReflectionException
+     */
     public function createNginx()
     {
         $this->createDirectory(getcwd() . '/private/dockit/nginx/');
@@ -118,7 +135,6 @@ class Config implements DockitCommand
         $this->createTemplateFile('docker/nginx/' . $this->getProjectCMS() . '/nginx.conf.twig',
             getcwd() . '/private/dockit/nginx/nginx.conf');
     }
-
 
     public function createPhpFPM()
     {
@@ -134,6 +150,8 @@ class Config implements DockitCommand
      * @param HelperSet $helperSet
      * @param array ...$parameters
      * @return void
+     * @throws \JsonMapper_Exception
+     * @throws \ReflectionException
      */
     public function execute(InputInterface $input, OutputInterface $output, HelperSet $helperSet, array $parameters)
     {
@@ -157,6 +175,9 @@ class Config implements DockitCommand
         return $this->twig;
     }
 
+    /**
+     * @param OutputInterface $output
+     */
     public function restartHAProxy(OutputInterface $output)
     {
         $this->reverseProxy->createHAProxyConfig();

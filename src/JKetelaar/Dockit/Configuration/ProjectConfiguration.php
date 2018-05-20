@@ -27,23 +27,9 @@ class ProjectConfiguration
     protected $php = '7.1';
 
     /**
-     * @return string
+     * @var
      */
-    public function getProjectName(): string
-    {
-        return $this->projectName;
-    }
-
-    /**
-     * @param string $projectName
-     * @return ProjectConfiguration
-     */
-    public function setProjectName(string $projectName): ProjectConfiguration
-    {
-        $this->projectName = $projectName;
-
-        return $this;
-    }
+    protected $domain = 'default.dockit.site';
 
     /**
      * @return string
@@ -79,6 +65,53 @@ class ProjectConfiguration
     public function setPhp(string $php): ProjectConfiguration
     {
         $this->php = $php;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDomain()
+    {
+        return $this->domain;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDomainWithTLD()
+    {
+        return $this->domain . '.dockit.site';
+    }
+
+    /**
+     * @param mixed $domain
+     *
+     * @return ProjectConfiguration
+     */
+    public function setDomain($domain): ProjectConfiguration
+    {
+        $this->domain = $domain;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProjectName(): string
+    {
+        return $this->projectName;
+    }
+
+    /**
+     * @param string $projectName
+     * @return ProjectConfiguration
+     */
+    public function setProjectName(string $projectName): ProjectConfiguration
+    {
+        $this->projectName = $projectName;
 
         return $this;
     }
