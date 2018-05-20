@@ -1,0 +1,98 @@
+server {
+    listen 80;
+
+    client_max_body_size 108M;
+
+    access_log /var/log/nginx/application.access.log;
+    error_log /var/log/nginx/application.error.log;
+
+    set $MAGE_ROOT /application;
+    root $MAGE_ROOT/pub;
+
+    rewrite ^/static/(version\d*/)?(.*)$ /static/$2 last;
+
+    location ~ ^/static/(version\d*/)?(.*)$ {
+
+      ## images css js
+      location ~* \.(jpg|jpeg|png|gif|svg|js|css|ico|txt)$ {
+        expires max;
+        log_not_found on;
+        access_log off;
+        add_header ETag "";
+        add_header Cache-Control "public";
+        try_files $uri $uri/ @static;
+      }
+
+      ## fonts
+      location ~* \.(swf|eot|ttf|otf|woff|woff2)$ {
+        expires max;
+        log_not_found on;
+        access_log off;
+        add_header ETag "";
+        add_header Cache-Control "public";
+        try_files $uri $uri/ @static;
+      }
+
+      try_files $uri $uri/ @static;
+    }
+
+    ## Media location
+    location /media/ {
+
+      ## images css js
+      location ~* \.(jpg|jpeg|png|gif|svg|js|css|ico|txt)$ {
+        expires max;
+        log_not_found on;
+        access_log off;
+        add_header ETag "";
+        add_header Cache-Control "public";
+        try_files $uri $uri/ @media;
+      }
+
+      ## fonts
+      location ~* \.(swf|eot|ttf|otf|woff|woff2)$ {
+        expires max;
+        log_not_found on;
+        access_log off;
+        add_header ETag "";
+        add_header Cache-Control "public";
+        try_files $uri $uri/ @media;
+      }
+
+      try_files $uri $uri/ @media;
+    }
+
+    location @static { rewrite /static/(version\d*/)?(.*)$ /static.php?resource=$2 last; }
+    location @media { try_files $uri $uri/ /get.php$is_args$args; }
+
+    location / {
+        try_files $uri /index.php$is_args$args;
+    }
+
+    location ~ (index|get|static|report|404|503)\.php$ {
+
+        try_files $uri =404;
+
+        fastcgi_param MAGE_RUN_CODE nl;
+        fastcgi_param MAGE_RUN_TYPE store;
+
+        fastcgi_pass php-fpm:9000;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param PHP_VALUE "error_log=/var/log/nginx/application_php_errors.log";
+
+        fastcgi_index index.php;
+
+        fastcgi_keep_conn on;
+
+        fastcgi_cache_key $scheme|$host|search|$arg_q;
+        fastcgi_cache_valid 200 301 302 2h;
+        fastcgi_cache_use_stale updating error timeout invalid_header http_500;
+        fastcgi_pass_header Set-Cookie;
+        fastcgi_pass_header Cookie;
+        fastcgi_ignore_headers Cache-Control Expires Set-Cookie;
+
+        fastcgi_buffers 16 16k;
+        fastcgi_buffer_size 32k;
+        include fastcgi_params;
+    }
+}

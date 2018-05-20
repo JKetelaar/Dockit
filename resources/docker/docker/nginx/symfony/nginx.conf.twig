@@ -1,0 +1,34 @@
+server {
+    listen 80;
+
+    client_max_body_size 108M;
+
+    access_log /var/log/nginx/application.access.log;
+    error_log /var/log/nginx/application.error.log;
+
+    root /application/web;
+
+    location / {
+        try_files $uri /app_dev.php$is_args$args;
+    }
+
+    location ~ \.php$ {
+        fastcgi_pass php-fpm:9000;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param PHP_VALUE "error_log=/var/log/nginx/application_php_errors.log";
+
+        fastcgi_keep_conn on;
+
+        fastcgi_cache_key $scheme|$host|search|$arg_q;
+        fastcgi_cache_valid 200 301 302 2h;
+        fastcgi_cache_use_stale updating error timeout invalid_header http_500;
+        fastcgi_pass_header Set-Cookie;
+        fastcgi_pass_header Cookie;
+        fastcgi_ignore_headers Cache-Control Expires Set-Cookie;
+
+        fastcgi_buffers 16 16k;
+        fastcgi_buffer_size 32k;
+        include fastcgi_params;
+    }
+}
