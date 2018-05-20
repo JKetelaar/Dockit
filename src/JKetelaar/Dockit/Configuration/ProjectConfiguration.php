@@ -78,14 +78,6 @@ class ProjectConfiguration
     }
 
     /**
-     * @return mixed
-     */
-    public function getDomainWithTLD()
-    {
-        return $this->domain . '.dockit.site';
-    }
-
-    /**
      * @param mixed $domain
      *
      * @return ProjectConfiguration
@@ -95,6 +87,14 @@ class ProjectConfiguration
         $this->domain = $domain;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDomainWithTLD()
+    {
+        return $this->domain.'.dockit.site';
     }
 
     /**
@@ -114,5 +114,39 @@ class ProjectConfiguration
         $this->projectName = $projectName;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDockerPhpVersion()
+    {
+        switch ($this->php) {
+            case '5.6':
+                return 'php56';
+            case '7.0':
+                return 'php70';
+            case '7.1':
+                return 'php71';
+            case '7.2':
+            default:
+                return 'php72';
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getDockerPhpPath()
+    {
+        switch ($this->php) {
+            case '5.6':
+                return '/etc/php5/';
+            case '7.0':
+            case '7.1':
+            case '7.2':
+            default:
+                return '/etc/php/'.$this->php.'/';
+        }
     }
 }

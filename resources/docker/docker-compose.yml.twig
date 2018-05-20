@@ -2,17 +2,17 @@ version: "3.5"
 services:
 
 {% if cms != 'typo3' %}
-    {{ project.name }}-webserver:
+    {{ project.projectName }}-webserver:
         image: nginx:alpine
-        container_name: {{ project.name }}-webserver
+        container_name: {{ project.projectName }}-webserver
         working_dir: /application
         volumes:
-            - "{{ project.directory }}:/application"
+            - "{{ directory }}:/application"
             - "./nginx/nginx.conf:/etc/nginx/conf.d/default.conf"
 {% else %}
-    {{ project.name }}-webserver:
+    {{ project.projectName }}-webserver:
         image: webdevops/apache:latest
-        container_name: {{ project.name }}-webserver
+        container_name: {{ project.projectName }}-webserver
         working_dir: /application
         volumes:
             - "{{ project.directory }}:/app"
@@ -21,26 +21,26 @@ services:
         ports:
             - "80"
         networks:
-          - {{ project.name }}
+          - {{ project.projectName }}
         links:
-          - "{{ project.name }}-php-fpm:php-fpm"
-          - "{{ project.name }}-php-fpm:{{ project.name }}-php-fpm.dockit.site"
+          - "{{ project.projectName }}-php-fpm:php-fpm"
+          - "{{ project.projectName }}-php-fpm:{{ project.projectName }}-php-fpm.dockit.site"
 
-    {{ project.name }}-php-fpm:
-        image: jketelaar/dockit-php71-fpm
-        container_name: {{ project.name }}-php-fpm
+    {{ project.projectName }}-php-fpm:
+        image: jketelaar/dockit-{{ project.getDockerPhpVersion }}-fpm
+        container_name: {{ project.projectName }}-php-fpm
         working_dir: /application
         volumes:
             - "{{ project.directory }}:/application"
-            - "./php-fpm/php-ini-overrides.ini:/etc/php/7.1/fpm/conf.d/99-overrides.ini"
+            - "./php-fpm/php-ini-overrides.ini:{{ project.getDockerPhpPath }}fpm/conf.d/99-overrides.ini"
         networks:
-          - {{ project.name }}
+          - {{ project.projectName }}
         external_links:
           - "dockit-mysql:mysql.dockit.site"
           - "dockit-redis:redis.dockit.site"
           - "dockit-mailhog:mailhog.dockit.site"
 
 networks:
-    {{ project.name }}:
+    {{ project.projectName }}:
         external:
             name: dockit

@@ -152,14 +152,8 @@ class Config implements DockitCommand
             'docker-compose.yml.twig',
             getcwd().'/private/dockit/docker-compose.yml',
             [
-                'project' =>
-                    [
-                        'name' => strtolower(preg_replace('/[^A-Za-z0-9\-]/', '', $this->getProjectName())),
-                        'php' => $this->getPHPVersion(),
-                        'directory' => getcwd(),
-                        'mysql' => $mysqlDir,
-                        'cms' => $this->getProjectCMS(),
-                    ],
+                'project' => ConfigHelper::getConfig(),
+                'directory' => getcwd()
             ]
         );
     }
