@@ -28,7 +28,7 @@ class Start implements DockitCommand
     {
         $output->writeln('<info>Starting docker instances</info>');
 
-        CommandLine::execute('docker-compose --log-level CRITICAL --file "' . getcwd() . '/private' . '/dockit/docker-compose.yml" up --no-recreate -d',
+        CommandLine::execute('docker-compose --log-level ERROR --file "' . getcwd() . '/private' . '/dockit/docker-compose.yml" up --no-recreate -d',
             $output);
     }
 }

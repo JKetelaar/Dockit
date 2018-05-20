@@ -69,7 +69,7 @@ class ConfigHelper
             $configData[$property->getName()] = $property->getValue($config);
         }
 
-        file_put_contents(self::getConfigFile(), json_encode($configData));
+        file_put_contents(self::getConfigFile(), json_encode($configData, JSON_PRETTY_PRINT));
 
         self::$config = $config;
     }

@@ -85,7 +85,7 @@ class GlobalConfiguration
             $configData[$property->getName()] = $property->getValue($configuration);
         }
 
-        file_put_contents(self::getFile(), json_encode($configData));
+        file_put_contents(self::getFile(), json_encode($configData, JSON_PRETTY_PRINT));
     }
 
     /**

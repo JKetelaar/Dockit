@@ -28,7 +28,7 @@ class Stop implements DockitCommand
     {
         $output->writeln('<info>Stopping docker instances</info>');
 
-        CommandLine::execute('docker-compose --log-level CRITICAL --file "' . getcwd() . '/private' . '/dockit/docker-compose.yml" down',
+        CommandLine::execute('docker-compose --log-level ERROR --file "' . getcwd() . '/private' . '/dockit/docker-compose.yml" down',
             $output);
 
         $output->writeln('<info>Stopping old docker instances</info>');
