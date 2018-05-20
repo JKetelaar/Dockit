@@ -18,7 +18,8 @@
         "guzzlehttp/guzzle": "^6.3",
         "twig/twig": "^2.4",
         "netresearch/jsonmapper": "^1.4",
-        "docker-php/docker-php": "^2.0"
+        "docker-php/docker-php": "^2.0",
+        "yuloh/open": "^0.1.0"
     },
     "autoload": {
         "psr-4": {

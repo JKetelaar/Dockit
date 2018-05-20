@@ -5,12 +5,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 const DOCKIT_VERSION = '0.0.1';
-const DOCKIT_RESOURCES_DIR = __DIR__ . '/../resources';
+const DOCKIT_RESOURCES_DIR = __DIR__.'/../resources';
 
-if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
-    require __DIR__ . '/../vendor/autoload.php';
+if (file_exists(__DIR__.'/../vendor/autoload.php')) {
+    require __DIR__.'/../vendor/autoload.php';
 } else {
-    require __DIR__ . '/../../../autoload.php';
+    require __DIR__.'/../../../autoload.php';
 }
 
 /* Application initiation */
@@ -19,6 +19,20 @@ $app = new Application('Dockit', DOCKIT_VERSION);
 $dockerStart = new \JKetelaar\Dockit\Docker\Start();
 $dockerStop = new \JKetelaar\Dockit\Docker\Stop();
 $dockerConfig = new \JKetelaar\Dockit\Docker\Config();
+$dockitOpen = new \JKetelaar\Dockit\Dockit\Open();
+
+$app->command(
+    'open',
+    function (
+        InputInterface $input,
+        OutputInterface $output
+    ) use ($dockitOpen) {
+        $dockitOpen->execute($input, $output, $this->getHelperSet(), []);
+    }
+)->descriptions(
+    'Creates the configuration files for the docker instances of the current project',
+    []
+);
 
 $app->command(
     'config',

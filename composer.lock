@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a8480f5dbe7251ecdfbe96deeafe14af",
+    "content-hash": "cf3b7b5977d0fe0fb92bc29a683bcc81",
     "packages": [
         {
             "name": "clue/stream-filter",
@@ -1795,6 +1795,51 @@
                 "templating"
             ],
             "time": "2018-04-02T09:24:19+00:00"
+        },
+        {
+            "name": "yuloh/open",
+            "version": "0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yuloh/open.git",
+                "reference": "7865ddfab84064ec562d9bb27c90757c3e015137"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yuloh/open/zipball/7865ddfab84064ec562d9bb27c90757c3e015137",
+                "reference": "7865ddfab84064ec562d9bb27c90757c3e015137",
+                "shasum": ""
+            },
+            "require": {
+                "php": "~5.5|~7.0"
+            },
+            "require-dev": {
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/open.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matt Allan",
+                    "email": "matthew.james.allan@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Open a file or url in the default app",
+            "homepage": "https://github.com/yuloh/open",
+            "keywords": [
+                "open",
+                "yuloh"
+            ],
+            "time": "2016-12-20T15:07:36+00:00"
         }
     ],
     "packages-dev": [],

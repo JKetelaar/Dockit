@@ -27,11 +27,12 @@ class ConfigHelper
     private static $config;
 
     /**
-     * @return ProjectConfiguration
+     * @param bool $returnNull
+     * @return ProjectConfiguration|null
      * @throws \JsonMapper_Exception
      * @throws \ReflectionException
      */
-    public static function getConfig(): ProjectConfiguration
+    public static function getConfig(bool $returnNull = false): ?ProjectConfiguration
     {
         if (self::$config === null) {
             /** @var ProjectConfiguration $config */
@@ -42,6 +43,9 @@ class ConfigHelper
                     new ProjectConfiguration()
                 );
             } else {
+                if ($returnNull === true){
+                    return null;
+                }
                 $config = new ProjectConfiguration();
             }
 
