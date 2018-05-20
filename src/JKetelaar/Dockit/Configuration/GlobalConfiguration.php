@@ -53,6 +53,24 @@ class GlobalConfiguration
         return $_SERVER['HOME'].'/.dockit/config.json';
     }
 
+    public static function addProject(string $projectDirectory){
+        $config = self::get();
+
+        $projects = $config->getProjects();
+        $projects[] = $projectDirectory;
+        $cleanedProjects = [];
+
+        foreach ($projects as $project){
+            if(file_exists($project) && !in_array($project, $cleanedProjects)){
+                $cleanedProjects[] = $project;
+            }
+        }
+
+        $config->setProjects($cleanedProjects);
+
+        self::set($config);
+    }
+
     /**
      * @param GlobalConfiguration $configuration
      * @throws \ReflectionException

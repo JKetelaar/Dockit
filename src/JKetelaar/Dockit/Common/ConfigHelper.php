@@ -5,7 +5,6 @@
 
 namespace JKetelaar\Dockit\Common;
 
-use JKetelaar\Dockit\Configuration\GlobalConfiguration;
 use JKetelaar\Dockit\Configuration\ProjectConfiguration;
 use JsonMapper;
 use ReflectionClass;
@@ -74,7 +73,7 @@ class ConfigHelper
     /**
      * @return string
      */
-    private static final function getConfigFile(): string
+    public static final function getConfigFile(): string
     {
         return getcwd().'/private/dockit/config.json';
     }
@@ -89,6 +88,14 @@ class ConfigHelper
         }
 
         return self::$jsonMapper;
+    }
+
+    /**
+     * @return bool
+     */
+    public static function hasConfig()
+    {
+        return file_exists(self::getConfigFile());
     }
 
     /**
