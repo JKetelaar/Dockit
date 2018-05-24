@@ -36,6 +36,12 @@ class ReverseProxy
         $projects = $config->getProjectConfigurations();
 
         $this->config->createTemplateFile(
+            'dockit/nginx.conf.twig',
+            $_SERVER['HOME'].'/.dockit/dockit/nginx.conf',
+            []
+        );
+
+        $this->config->createTemplateFile(
             'dockit/haproxy.conf.twig',
             $_SERVER['HOME'].'/.dockit/dockit/haproxy.conf',
             [

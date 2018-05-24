@@ -9,6 +9,7 @@ services:
         volumes:
             - "{{ directory }}:/application"
             - "./nginx/nginx.conf:/etc/nginx/conf.d/default.conf"
+            - "{{ dockit_directory}}/nginx.conf:/etc/nginx/nginx.conf"
 {% else %}
     {{ project.projectName }}-webserver:
         image: webdevops/apache:latest
@@ -20,6 +21,7 @@ services:
 {% endif %}
         ports:
             - "80"
+            - "443"
         networks:
           - {{ project.projectName }}
         links:

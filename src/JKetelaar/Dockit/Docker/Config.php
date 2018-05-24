@@ -153,7 +153,8 @@ class Config implements DockitCommand
             getcwd().'/private/dockit/docker-compose.yml',
             [
                 'project' => ConfigHelper::getConfig(),
-                'directory' => getcwd()
+                'directory' => getcwd(),
+                'dockit_directory' => $_SERVER['HOME'].'/.dockit/dockit',
             ]
         );
     }
@@ -188,26 +189,6 @@ class Config implements DockitCommand
     }
 
     /**
-     * @return string
-     * @throws \JsonMapper_Exception
-     * @throws \ReflectionException
-     */
-    private function getPHPVersion(): string
-    {
-        return ConfigHelper::getConfig()->getPhp();
-    }
-
-    /**
-     * @return string
-     * @throws \JsonMapper_Exception
-     * @throws \ReflectionException
-     */
-    private function getProjectCMS(): string
-    {
-        return ConfigHelper::getConfig()->getCms();
-    }
-
-    /**
      * @throws \JsonMapper_Exception
      * @throws \ReflectionException
      */
@@ -219,6 +200,16 @@ class Config implements DockitCommand
             'docker/nginx/'.$this->getProjectCMS().'/nginx.conf.twig',
             getcwd().'/private/dockit/nginx/nginx.conf'
         );
+    }
+
+    /**
+     * @return string
+     * @throws \JsonMapper_Exception
+     * @throws \ReflectionException
+     */
+    private function getProjectCMS(): string
+    {
+        return ConfigHelper::getConfig()->getCms();
     }
 
     public function createPhpFPM()
@@ -246,5 +237,15 @@ class Config implements DockitCommand
     public function getTwig(): Twig_Environment
     {
         return $this->twig;
+    }
+
+    /**
+     * @return string
+     * @throws \JsonMapper_Exception
+     * @throws \ReflectionException
+     */
+    private function getPHPVersion(): string
+    {
+        return ConfigHelper::getConfig()->getPhp();
     }
 }
