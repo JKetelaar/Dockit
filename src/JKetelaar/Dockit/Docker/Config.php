@@ -96,7 +96,7 @@ class Config implements DockitCommand
 
             $cmsQuestion = new ChoiceQuestion(
                 'Please select your CMS (default "Default")',
-                ['Default', 'WordPress', 'Typo3', 'Magento1', 'Magento2'],
+                ['Default', 'WordPress', 'Typo3', 'Magento1', 'Magento2', 'Symfony'],
                 'default'
             );
             $cms = strtolower($helper->ask($input, $output, $cmsQuestion));
