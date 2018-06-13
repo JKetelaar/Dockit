@@ -1,0 +1,31 @@
+version: "2"
+
+options:
+  compose-file-path: './docker-compose.yml'
+  verbose: true
+
+syncs:
+  vendors:
+    src: '/Users/jeroen/Projects/Personal/AIAFS/vendor'
+    sync_args: '--delete'
+    sync_strategy: 'rsync'
+    sync_userid: '1000'
+    sync_excludes: ['bin/']
+    sync_host_port: 10871
+  wpcontent:
+    src: '/Users/jeroen/Projects/Personal/AIAFS/wp-content'
+    sync_strategy: 'unison'
+    sync_host_port: 10873
+    sync_userid: '1000'
+    sync_args: '-prefer newer -copyonconflict'
+    sync_excludes: ['themes', 'plugins', 'cache']
+  plugins:
+    src: '/Users/jeroen/Projects/Personal/AIAFS/wp-content/plugins'
+    sync_strategy: 'unison'
+    sync_userid: '1000'
+    sync_args: '-prefer newer -copyonconflict'
+  themes:
+    src: '/Users/jeroen/Projects/Personal/AIAFS/wp-content/themes'
+    sync_strategy: 'unison'
+    sync_userid: '1000'
+    sync_args: '-prefer newer -copyonconflict'

@@ -1,0 +1,11 @@
+version: "2"
+
+options:
+  compose-file-path: './docker-compose.yml'
+  verbose: true
+
+syncs:
+  docker-sync:
+    src: '{{ directory }}'
+    sync_userid: '1000'
+    sync_excludes: ['.gitignore', '.git/', '.idea/']

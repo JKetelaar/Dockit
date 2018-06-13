@@ -1,0 +1,40 @@
+version: "2"
+
+options:
+  compose-file-path: './docker-compose.yml'
+  verbose: true
+
+syncs:
+  vendors:
+    src: '{{ directory }}/vendor'
+    sync_args: '--delete'
+    sync_strategy: 'rsync'
+    sync_userid: '1000'
+    sync_excludes: ['bin/']
+    sync_host_port: 10871
+  src:
+    src: '{{ directory }}/src'
+    sync_strategy: 'unison'
+    sync_userid: '1000'
+    sync_args: '-prefer newer -copyonconflict'
+  bin:
+    src: '{{ directory }}/bin'
+    sync_strategy: 'unison'
+    sync_userid: '1000'
+    sync_args: '-prefer newer -copyonconflict'
+  web:
+    src: '{{ directory }}/web'
+    sync_strategy: 'unison'
+    sync_userid: '1000'
+    sync_args: '-prefer newer -copyonconflict'
+  app:
+    src: '{{ directory }}/app'
+    sync_strategy: 'unison'
+    sync_userid: '1000'
+    sync_args: '-prefer newer -copyonconflict'
+  var:
+    src: '{{ directory }}/var'
+    sync_strategy: 'unison'
+    sync_userid: '1000'
+    sync_args: '-prefer newer -copyonconflict'
+    sync_excludes: ['cache', 'logs', 'sessions']
