@@ -6,7 +6,7 @@ server {
     access_log /var/log/nginx/application.access.log;
     error_log /var/log/nginx/application.error.log;
 
-    root /application/www;
+    root /application;
 
     location / {
         try_files $uri $uri/ /index.php?$args;
