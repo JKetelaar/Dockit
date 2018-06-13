@@ -7,7 +7,7 @@ services:
         container_name: {{ project.projectName }}-webserver
         working_dir: /application
         volumes:
-            - "{{ directory }}:/application"
+            - "{{ directory }}:/application:cached"
             - "./nginx/nginx.conf:/etc/nginx/conf.d/default.conf"
             - "{{ dockit_directory}}/nginx.conf:/etc/nginx/nginx.conf"
 {% else %}
@@ -16,7 +16,7 @@ services:
         container_name: {{ project.projectName }}-webserver
         working_dir: /application
         volumes:
-            - "{{ project.directory }}:/app"
+            - "{{ project.directory }}:/app:cached"
             - "./nginx/nginx.conf:/etc/nginx/conf.d/default.conf"
 {% endif %}
         ports:
@@ -33,7 +33,7 @@ services:
         container_name: {{ project.projectName }}-php-fpm
         working_dir: /application
         volumes:
-            - "{{ directory }}:/application"
+            - "{{ directory }}:/application:cached"
             - "./php-fpm/php-ini-overrides.ini:{{ project.getDockerPhpPath }}fpm/conf.d/99-overrides.ini"
         networks:
           - {{ project.projectName }}
