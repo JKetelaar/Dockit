@@ -4,7 +4,7 @@ Dockerize it
 This is still Work in Progress
 
 ## How to install?
-1.) First ensure you have the latest php (>= 7.1) installed:
+1.) First ensure you have the latest php (>= 7.1) installed, preferably the latest stable:
 ```bash
 brew install php@7.2
 ```

@@ -19,19 +19,39 @@ $app = new Application('Dockit', DOCKIT_VERSION);
 $dockerStart = new \JKetelaar\Dockit\Docker\Start();
 $dockerStop = new \JKetelaar\Dockit\Docker\Stop();
 $dockerConfig = new \JKetelaar\Dockit\Docker\Config();
-$dockitOpen = new \JKetelaar\Dockit\Dockit\Open();
 
-$app->command(
+function addEmptyCommand(
+    \JKetelaar\Dockit\Common\DockitCommand $command,
+    string $name,
+    string $description,
+    Application $app
+) {
+    $app->command(
+        $name,
+        function (
+            InputInterface $input,
+            OutputInterface $output
+        ) use ($command) {
+            $command->execute($input, $output, $this->getHelperSet(), []);
+        }
+    )->descriptions(
+        $description,
+        []
+    );
+}
+
+addEmptyCommand(
+    new \JKetelaar\Dockit\Dockit\Open(),
     'open',
-    function (
-        InputInterface $input,
-        OutputInterface $output
-    ) use ($dockitOpen) {
-        $dockitOpen->execute($input, $output, $this->getHelperSet(), []);
-    }
-)->descriptions(
     'Creates the configuration files for the docker instances of the current project',
-    []
+    $app
+);
+
+addEmptyCommand(
+    new \JKetelaar\Dockit\Dockit\HAProxy(),
+    'haproxy',
+    'Creates the configuration files for the docker instances of the current project',
+    $app
 );
 
 $app->command(
@@ -83,8 +103,12 @@ $app->command(
         InputInterface $input,
         OutputInterface $output
     ) use ($dockerStart, $dockerStop, $dockerConfig) {
-        $dockerStop->execute($input, $output, $this->getHelperSet(), []);
-        $dockerStart->execute($input, $output, $this->getHelperSet(), []);
+        if (\JKetelaar\Dockit\Common\ConfigHelper::hasConfig() === true) {
+            $dockerStop->execute($input, $output, $this->getHelperSet(), []);
+            $dockerStart->execute($input, $output, $this->getHelperSet(), []);
+        } else {
+            $output->writeln('<error>No configuration found, only restarting Dockit system itself</error>');
+        }
 
         $dockerConfig->restartHAProxy($output);
     }

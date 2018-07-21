@@ -5,6 +5,7 @@
 
 namespace JKetelaar\Dockit\Common;
 
+use Http\Client\Socket\Exception\ConnectionException;
 use JKetelaar\Dockit\Configuration\ProjectConfiguration;
 use JsonMapper;
 use ReflectionClass;
@@ -27,6 +28,19 @@ class ConfigHelper
     private static $config;
 
     /**
+     * @return bool
+     */
+    public static function isRunning(): bool
+    {
+        $docker = \Docker\Docker::create();
+        try {
+            return ($docker->containerList() !== null);
+        } catch (ConnectionException $exception) {
+            return false;
+        }
+    }
+
+    /**
      * @param bool $returnNull
      * @return ProjectConfiguration|null
      * @throws \JsonMapper_Exception
@@ -43,7 +57,7 @@ class ConfigHelper
                     new ProjectConfiguration()
                 );
             } else {
-                if ($returnNull === true){
+                if ($returnNull === true) {
                     return null;
                 }
                 $config = new ProjectConfiguration();

@@ -35,7 +35,7 @@ services:
         image: mysql:5.7
         container_name: dockit-mysql
         volumes:
-            - "/Users/jeroen/.dockit/data/mysql:/var/lib/mysql"
+            - "{{ dockit_directory}}/data/mysql:/var/lib/mysql"
         environment:
             - MYSQL_ROOT_PASSWORD=root
         ports:

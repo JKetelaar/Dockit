@@ -53,7 +53,9 @@ class ReverseProxy
         $this->config->createTemplateFile(
             'dockit/docker-compose.yml.twig',
             $_SERVER['HOME'].'/.dockit/dockit/docker-compose.yml',
-            []
+            [
+                'dockit_directory' => $_SERVER['HOME'].'/.dockit/dockit',
+            ]
         );
 
         $config::set($config);

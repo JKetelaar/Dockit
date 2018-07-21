@@ -42,21 +42,7 @@ class Config implements DockitCommand
         $loader = new Twig_Loader_Filesystem(DOCKIT_RESOURCES_DIR.'/docker/');
         $this->twig = new Twig_Environment($loader);
 
-        $this->createDirectory(getcwd().'/private/dockit/');
-        $this->createDirectory($_SERVER['HOME'].'/.dockit/data/mysql');
-        $this->createDirectory($_SERVER['HOME'].'/.dockit/dockit/');
-
         $this->reverseProxy = new ReverseProxy($this);
-    }
-
-    /**
-     * @param string $directory
-     */
-    private function createDirectory(string $directory)
-    {
-        if (!file_exists($directory)) {
-            mkdir($directory, 0755, true);
-        }
     }
 
     /**
@@ -70,6 +56,10 @@ class Config implements DockitCommand
      */
     public function execute(InputInterface $input, OutputInterface $output, HelperSet $helperSet, array $parameters)
     {
+        $this->createDirectory(getcwd().'/private/dockit/');
+        $this->createDirectory($_SERVER['HOME'].'/.dockit/data/mysql');
+        $this->createDirectory($_SERVER['HOME'].'/.dockit/dockit/');
+
         if (!ConfigHelper::hasConfig()) {
             $helper = $helperSet->get('question');
 
@@ -136,6 +126,16 @@ class Config implements DockitCommand
         $this->createPhpFPM();
 
         $this->restartHAProxy($output);
+    }
+
+    /**
+     * @param string $directory
+     */
+    private function createDirectory(string $directory)
+    {
+        if (!file_exists($directory)) {
+            mkdir($directory, 0755, true);
+        }
     }
 
     /**
