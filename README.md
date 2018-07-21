@@ -11,6 +11,15 @@ A real use-case scenario would be a development agency that has multiple website
 Such as project X with PHP 7.0, MySQL and Solr; but also having project Y with PHP 7.1, and ElasticSearch.  
 Yet you want to work on these projects simultaneously, without having to switch the FPM instance all the time.
 
+## ToDo
+What's left To Do?
+
+* Fix MySQL issue where the host of Docker isn't allowed to connect (`Host '172.18.0.1' is not allowed to connect to this MySQL server`)
+* Add ElasticSearch
+* Add Solr
+* Allow Apache or Nginx
+* Revamp the entire system, as this was based on a PoC, but extending makes it quite hard...
+
 ## How to install?
 1.) First ensure you have the latest php (>= 7.1) installed, preferably the latest stable:
 ```bash
