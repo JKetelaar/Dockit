@@ -165,9 +165,9 @@ class Config implements DockitCommand
         $this->restartHAProxy($output);
 
         $output->writeln(
-            '<info>If you do not have an internet connection, please adjust your `/etc/hosts` by adding "'.$config->getDomainWithTLD(
-            ).'" pointing to "127.0.0.1"</info>'
+            '<info>If you do not have an internet connection, please add the following to your `/etc/hosts`</info>'
         );
+        $output->writeln("<comment>127.0.0.1\t".$config->getDomainWithTLD()."</comment>");
     }
 
     /**
