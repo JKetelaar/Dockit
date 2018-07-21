@@ -27,6 +27,25 @@ class GlobalConfiguration
      */
     protected $installRedis = true;
 
+    public static function addProject(string $projectDirectory)
+    {
+        $config = self::get();
+
+        $projects = $config->getProjects();
+        $projects[] = $projectDirectory;
+        $cleanedProjects = [];
+
+        foreach ($projects as $project) {
+            if (file_exists($project) && !in_array($project, $cleanedProjects)) {
+                $cleanedProjects[] = $project;
+            }
+        }
+
+        $config->setProjects($cleanedProjects);
+
+        self::set($config);
+    }
+
     /**
      * @return GlobalConfiguration|object
      */
@@ -53,22 +72,24 @@ class GlobalConfiguration
         return $_SERVER['HOME'].'/.dockit/config.json';
     }
 
-    public static function addProject(string $projectDirectory){
-        $config = self::get();
+    /**
+     * @return string[]
+     */
+    public function getProjects(): array
+    {
+        return $this->projects;
+    }
 
-        $projects = $config->getProjects();
-        $projects[] = $projectDirectory;
-        $cleanedProjects = [];
+    /**
+     * @param string[] $projects
+     *
+     * @return GlobalConfiguration
+     */
+    public function setProjects(array $projects): GlobalConfiguration
+    {
+        $this->projects = $projects;
 
-        foreach ($projects as $project){
-            if(file_exists($project) && !in_array($project, $cleanedProjects)){
-                $cleanedProjects[] = $project;
-            }
-        }
-
-        $config->setProjects($cleanedProjects);
-
-        self::set($config);
+        return $this;
     }
 
     /**
@@ -95,33 +116,13 @@ class GlobalConfiguration
     {
         $projects = [];
         foreach ($this->projects as $projectFile) {
-            $project = ConfigHelper::getConfigFromFile($projectFile . '/private/dockit/config.json');
+            $project = ConfigHelper::getConfigFromFile($projectFile.'/private/dockit/config.json');
             if ($project !== null) {
                 $projects[] = $project;
             }
         }
 
         return $projects;
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getProjects(): array
-    {
-        return $this->projects;
-    }
-
-    /**
-     * @param string[] $projects
-     *
-     * @return GlobalConfiguration
-     */
-    public function setProjects(array $projects): GlobalConfiguration
-    {
-        $this->projects = $projects;
-
-        return $this;
     }
 
     /**
