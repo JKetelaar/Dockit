@@ -84,18 +84,19 @@ $app->command(
 );
 
 $app->command(
-    'stop',
+    'stop [--all]',
     function (
+        $all,
         InputInterface $input,
         OutputInterface $output
     ) use ($dockerStop, $dockerConfig) {
-        $dockerStop->execute($input, $output, $this->getHelperSet(), []);
+        $dockerStop->execute($input, $output, $this->getHelperSet(), ['all' => $all]);
 
         $dockerConfig->restartHAProxy($output);
     }
 )->descriptions(
-    'Stops the docker instances for the current project',
-    []
+    'Stops the Docker instances for the current project',
+    ['--all' => 'Also stop all other running Docker containers']
 );
 
 $app->command(

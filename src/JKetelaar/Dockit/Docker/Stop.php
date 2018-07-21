@@ -5,6 +5,7 @@
 
 namespace JKetelaar\Dockit\Docker;
 
+use Docker\Docker;
 use JKetelaar\Dockit\Common\CommandLine;
 use JKetelaar\Dockit\Common\ConfigHelper;
 use JKetelaar\Dockit\Common\DockitCommand;
@@ -39,10 +40,23 @@ class Stop implements DockitCommand
             $output
         );
 
-        $output->writeln('<info>Stopping old docker instances</info>');
-        CommandLine::execute(
-            'docker ps --filter "status=running" | grep \'days ago\' | awk \'{print $1}\' | xargs docker stop'
-        );
+        $all = isset($parameters['all']) && $parameters['all'] === true;
+
+        if ($all) {
+            $output->writeln('<info>Stopping other docker instances</info>');
+
+            $docker = Docker::create();
+            $containers = $docker->containerList();
+            foreach ($containers as $container) {
+                $output->writeln('Stopping '.substr($container->getId(), 0, 10));
+                $docker->containerStop($container->getId());
+            }
+        } else {
+            $output->writeln('<info>Stopping old docker instances</info>');
+            CommandLine::execute(
+                'docker ps --filter "status=running" | grep \'days ago\' | awk \'{print $1}\' | xargs docker stop'
+            );
+        }
 
         $output->writeln('<info>Removing old docker instances</info>');
         CommandLine::execute(
