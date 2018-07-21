@@ -27,9 +27,21 @@ brew install composer
 composer global require jketelaar/dockit
 ```
 
-### `Dockit config`
+### `dockit config`
 This creates a configuration setup for your current project, based on the arguments you give in the CLI.  
 Simply type in `dockit config` and answer what the CLI requests.
 
-### `Dockit open`
+### `dockit start`
+Starts the Docker containers for the current project.
+
+### `dockit stop`
+Stops the Docker containers for the current project.
+
+### `dockit restart`
+Restarts the Docker containers for the current project.
+
+### `dockit open`
 Opens the current project in your browser.
+
+### `dockit haproxy`
+Opens the HAProxy in your browser.
