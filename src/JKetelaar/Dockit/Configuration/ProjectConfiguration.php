@@ -29,6 +29,11 @@ class ProjectConfiguration
     /**
      * @var string
      */
+    protected $webService = 'nginx';
+
+    /**
+     * @var string
+     */
     protected $domain = 'default.dockit.site';
 
     /**
@@ -70,6 +75,26 @@ class ProjectConfiguration
     public function setPhp(string $php): ProjectConfiguration
     {
         $this->php = $php;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWebService(): string
+    {
+        return $this->webService;
+    }
+
+    /**
+     * @param string $webService
+     *
+     * @return ProjectConfiguration
+     */
+    public function setWebService(string $webService): ProjectConfiguration
+    {
+        $this->webService = $webService;
 
         return $this;
     }

@@ -95,6 +95,13 @@ class Config implements DockitCommand
             );
             $phpVersion = $helper->ask($input, $output, $phpQuestion);
 
+            $webQuestion = new ChoiceQuestion(
+                'Please select the web service you would like to use (default "nginx")',
+                ['nginx', 'apache2'],
+                'nginx'
+            );
+            $webService = $helper->ask($input, $output, $webQuestion);
+
             $cmsQuestion = new ChoiceQuestion(
                 'Please select your CMS (default "Default")',
                 ['Default', 'WordPress', 'Typo3', 'Magento1', 'Magento2', 'Symfony'],
@@ -137,6 +144,7 @@ class Config implements DockitCommand
             $config->setCms($cms);
             $config->setDomain($domain);
             $config->setPhp($phpVersion);
+            $config->setWebService($webService);
             $config->setProjectName($projectName);
             $config->setModules($modules);
 
@@ -155,6 +163,11 @@ class Config implements DockitCommand
         $this->createPhpFPM();
 
         $this->restartHAProxy($output);
+
+        $output->writeln(
+            '<info>If you do not have an internet connection, please adjust your `/etc/hosts` by adding "'.$config->getDomainWithTLD(
+            ).'" pointing to "127.0.0.1"</info>'
+        );
     }
 
     /**
