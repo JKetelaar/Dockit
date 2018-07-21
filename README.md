@@ -3,6 +3,14 @@ Dockerize it
 
 This is still Work in Progress
 
+## What is this for?
+This is a command line tool that allows you to create and manage PHP projects.  
+It allows you to install a local development environment, without being stricted to your local environment.
+
+A real use-case scenario would be a development agency that has multiple websites with different requirements;   
+Such as project X with PHP 7.0, MySQL and Solr; but also having project Y with PHP 7.1, and ElasticSearch.  
+Yet you want to work on these projects simultaneously, without having to switch the FPM instance all the time.
+
 ## How to install?
 1.) First ensure you have the latest php (>= 7.1) installed, preferably the latest stable:
 ```bash

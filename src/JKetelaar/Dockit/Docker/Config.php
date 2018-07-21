@@ -60,15 +60,26 @@ class Config implements DockitCommand
         $this->createDirectory($_SERVER['HOME'].'/.dockit/data/mysql');
         $this->createDirectory($_SERVER['HOME'].'/.dockit/dockit/');
 
-        if (!ConfigHelper::hasConfig()) {
+        $force = isset($parameters['force']) && $parameters['force'] === true;
+
+        if (!ConfigHelper::hasConfig() || $force) {
             $helper = $helperSet->get('question');
 
-            $projectQuestion = new Question('Name of this project: ', '');
+            $projectQuestion = new Question(
+                'Name of this project (Default "'.basename(getcwd()).'"): ',
+                basename(getcwd())
+            );
             $projectQuestion->setValidator(
                 function ($answer) {
                     if (!is_string($answer) || strlen($answer) <= 2) {
                         throw new \RuntimeException(
                             'The name of the project should have at least 3 characters'
+                        );
+                    }
+
+                    if (strtolower($answer) === 'dockit') {
+                        throw new \RuntimeException(
+                            'The name of the project may not be "dockit"'
                         );
                     }
 
@@ -87,7 +98,7 @@ class Config implements DockitCommand
             $cmsQuestion = new ChoiceQuestion(
                 'Please select your CMS (default "Default")',
                 ['Default', 'WordPress', 'Typo3', 'Magento1', 'Magento2', 'Symfony'],
-                'default'
+                'Default'
             );
             $cms = strtolower($helper->ask($input, $output, $cmsQuestion));
 
@@ -105,11 +116,29 @@ class Config implements DockitCommand
             );
             $domain = strtolower($helper->ask($input, $output, $domainQuestion));
 
+            $modules = [];
+            $possibleModules = ['solr', 'elasticsearch'];
+
+            while (!isset($module) || $module !== 'No') {
+                $moduleQuestion = new ChoiceQuestion(
+                    'Are there any other modules you would like to install? (Hit Enter for none (anymore))',
+                    array_merge(['No'], $possibleModules),
+                    'No'
+                );
+                $module = $helper->ask($input, $output, $moduleQuestion);
+
+                if ($module !== 'No') {
+                    $modules[] = $module;
+                    unset($possibleModules[array_search($module, $possibleModules)]);
+                }
+            }
+
             $config = new ProjectConfiguration();
             $config->setCms($cms);
             $config->setDomain($domain);
             $config->setPhp($phpVersion);
             $config->setProjectName($projectName);
+            $config->setModules($modules);
 
             ConfigHelper::setConfig($config);
         }

@@ -27,9 +27,14 @@ class ProjectConfiguration
     protected $php = '7.1';
 
     /**
-     * @var
+     * @var string
      */
     protected $domain = 'default.dockit.site';
+
+    /**
+     * @var array
+     */
+    protected $modules = [];
 
     /**
      * @return string
@@ -112,6 +117,26 @@ class ProjectConfiguration
     public function setProjectName(string $projectName): ProjectConfiguration
     {
         $this->projectName = $projectName;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getModules(): array
+    {
+        return $this->modules;
+    }
+
+    /**
+     * @param array $modules
+     *
+     * @return ProjectConfiguration
+     */
+    public function setModules(array $modules): ProjectConfiguration
+    {
+        $this->modules = $modules;
 
         return $this;
     }

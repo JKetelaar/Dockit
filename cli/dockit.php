@@ -55,16 +55,17 @@ addEmptyCommand(
 );
 
 $app->command(
-    'config',
+    'config [--force]',
     function (
+        $force,
         InputInterface $input,
         OutputInterface $output
     ) use ($dockerConfig) {
-        $dockerConfig->execute($input, $output, $this->getHelperSet(), []);
+        $dockerConfig->execute($input, $output, $this->getHelperSet(), ['force' => $force]);
     }
 )->descriptions(
     'Creates the configuration files for the docker instances of the current project',
-    []
+    ['--force' => 'Reset the configuration']
 );
 
 $app->command(
