@@ -1,0 +1,72 @@
+user nginx;
+worker_processes auto;
+pid /run/nginx.pid;
+
+events {
+    worker_connections 4096;
+    multi_accept on;
+    use epoll;
+}
+
+http {
+    index index.html index.php;
+    include mime.types;
+    types {
+        application/font-woff2 woff2;
+    }
+    default_type text/html;
+
+    log_format main '$remote_addr - $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" - "$request_id"';
+    log_format error403 '$remote_addr - [$time_local] "$request" "$http_user_agent" - "$request_id"';
+
+    keepalive_timeout 30s;
+    autoindex off;
+    port_in_redirect    off;
+    sendfile on;
+    tcp_nopush on;
+    tcp_nodelay on;
+    etag off;
+    server_tokens off;
+
+    client_max_body_size 64m;
+    client_body_buffer_size 128k;
+    client_header_buffer_size 16k;
+    large_client_header_buffers 4 16k;
+
+    fastcgi_buffer_size 16k;
+    fastcgi_buffers 4 16k;
+
+    proxy_buffer_size 128k;
+    proxy_buffers 4 256k;
+    proxy_busy_buffers_size 256k;
+
+    ## Proxy forward
+    set_real_ip_from 127.0.0.1;
+
+    real_ip_header X-Forwarded-For;
+
+    ## Microcache
+    fastcgi_cache_path /tmp/nginx levels=1:2 keys_zone=microcache:100M max_size=500M inactive=2h;
+
+    limit_req_zone $http_x_forwarded_for zone=zone1:35m rate=10r/s;
+    limit_req_zone $http_x_forwarded_for zone=zone2:35m rate=10r/s;
+    limit_req_zone $http_x_forwarded_for zone=zone3:35m rate=10r/s;
+
+    ## Cache open FD
+    open_file_cache max=35000 inactive=30s;
+    open_file_cache_valid 30s;
+    open_file_cache_min_uses 2;
+
+    ## Gzipping is an easy way to reduce page weight
+    gzip on;
+    gzip_vary on;
+    gzip_proxied any;
+    gzip_types *;
+    gzip_buffers 4 16k;
+    gzip_comp_level 6;
+
+    server_names_hash_bucket_size 128;
+
+    ## Specific host configuration
+    include /etc/nginx/conf.d/*.conf;
+}

@@ -1,32 +1,32 @@
 {
-  "name": "jketelaar/dockit",
-  "homepage": "https://jketelaar.nl",
-  "description": "Dockit with Docker!",
-  "keywords": ["dockit", "dock", "jketelaar", "docker"],
-  "license": "MIT",
-  "version": "0.0.1",
-  "authors": [
-    {
-      "name": "Jeroen Ketelaar",
-      "email": "jeroen@ketelaar.me"
-    }
-  ],
-  "require": {
-    "php": ">=7.1.0",
-    "symfony/console": "*",
-    "mnapoli/silly": "*",
-    "guzzlehttp/guzzle": "^6.3",
-    "twig/twig": "^2.4",
-    "netresearch/jsonmapper": "^1.4",
-    "docker-php/docker-php": "^2.0",
-    "yuloh/open": "^0.1.0"
-  },
-  "autoload": {
-    "psr-4": {
-      "JKetelaar\\": "src/JKetelaar"
-    }
-  },
-  "bin": [
-    "dockit"
-  ]
+    "name": "jketelaar/dockit",
+    "homepage": "https://jketelaar.nl",
+    "description": "Dockit with Docker!",
+    "keywords": ["dockit", "dock", "jketelaar", "docker"],
+    "license": "MIT",
+    "version": "0.0.1",
+    "authors": [
+        {
+          "name": "Jeroen Ketelaar",
+          "email": "jeroen@ketelaar.me"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0",
+        "symfony/console": "*",
+        "mnapoli/silly": "*",
+        "guzzlehttp/guzzle": "^6.3",
+        "twig/twig": "^2.4",
+        "netresearch/jsonmapper": "^1.4",
+        "docker-php/docker-php": "^2.0",
+        "yuloh/open": "^0.1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "JKetelaar\\": "src/JKetelaar"
+        }
+    },
+    "bin": [
+        "dockit"
+    ]
 }

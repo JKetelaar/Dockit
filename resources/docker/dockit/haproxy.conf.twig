@@ -1,0 +1,51 @@
+global
+    log /dev/log    local0
+    log /dev/log    local1 notice
+    stats timeout 30s
+    daemon
+
+defaults
+    log     global
+    mode    http
+    option  httplog
+    option  dontlognull
+    timeout connect 5000
+    timeout client  50000
+    timeout server  50000
+    default-server init-addr last,libc,none
+
+frontend frontend
+    bind *:80
+    bind *:443
+    mode http
+
+    acl haproxy hdr(host) -i haproxy.dockit.site
+    use_backend haproxy if haproxy
+
+{% for project in projects %}
+    acl {{ project.projectName }} hdr(host) -i {{ project.getDomainWithTLD }}
+    use_backend {{ project.projectName }}-frontend if {{ project.projectName }}
+
+{% endfor %}
+
+{% for project in projects %}
+backend {{ project.projectName }}-frontend
+    balance roundrobin
+    option httpclose
+    server {{ project.projectName }} {{ project.projectName }}-webserver:80
+
+{% endfor %}
+
+backend haproxy
+    balance roundrobin
+    option httpclose
+    option forwardfor
+    server haproxy localhost:1936
+
+listen stats
+    bind *:1936
+    stats enable
+    stats uri /
+    stats hide-version
+    stats show-legends
+    stats admin if TRUE

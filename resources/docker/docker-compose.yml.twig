@@ -1,0 +1,48 @@
+version: "3.5"
+services:
+
+{% if cms != 'typo3' %}
+    {{ project.projectName }}-webserver:
+        image: nginx:alpine
+        container_name: {{ project.projectName }}-webserver
+        working_dir: /application
+        volumes:
+            - "{{ directory }}:/application:cached"
+            - "./nginx/nginx.conf:/etc/nginx/conf.d/default.conf"
+            - "{{ dockit_directory}}/nginx.conf:/etc/nginx/nginx.conf"
+{% else %}
+    {{ project.projectName }}-webserver:
+        image: webdevops/apache:latest
+        container_name: {{ project.projectName }}-webserver
+        working_dir: /application
+        volumes:
+            - "{{ project.directory }}:/app:cached"
+            - "./nginx/nginx.conf:/etc/nginx/conf.d/default.conf"
+{% endif %}
+        ports:
+            - "80"
+            - "443"
+        networks:
+          - {{ project.projectName }}
+        links:
+          - "{{ project.projectName }}-php-fpm:php-fpm"
+          - "{{ project.projectName }}-php-fpm:{{ project.projectName }}-php-fpm.dockit.site"
+
+    {{ project.projectName }}-php-fpm:
+        image: jketelaar/dockit-{{ project.getDockerPhpVersion }}-fpm
+        container_name: {{ project.projectName }}-php-fpm
+        working_dir: /application
+        volumes:
+            - "{{ directory }}:/application:cached"
+            - "./php-fpm/php-ini-overrides.ini:{{ project.getDockerPhpPath }}fpm/conf.d/99-overrides.ini"
+        networks:
+          - {{ project.projectName }}
+        external_links:
+          - "dockit-mysql:mysql.dockit.site"
+          - "dockit-redis:redis.dockit.site"
+          - "dockit-mailhog:mailhog.dockit.site"
+
+networks:
+    {{ project.projectName }}:
+        external:
+            name: dockit
